@@ -39,6 +39,7 @@ class Game(Scene):
         # game functionality
         self.board = Board(data.board_dimensions)
         self.piece_origin = (self.board.width//2-1, 2) # where the piece will spawn in
+        self.rng_bag = []
         self.piece = self.get_random_piece()
         self.next_piece = self.get_random_piece()
 
@@ -57,15 +58,25 @@ class Game(Scene):
         return self.lines_cleared // self.levelup_threshold + self.starting_level
 
     def get_random_piece(self):
-        piece_data = random.choice(data.pieces)
-        new_piece = Piece(
-            *self.piece_origin,
-            piece_data['color'],
-            piece_data['stages'],
-            piece_data['centers'],
-        )
-        return new_piece
 
+        # fill the bag if empty
+        if len(self.rng_bag) == 0:
+            
+            # populate with 2 of every piece
+            for piece_data in data.pieces + data.pieces:
+                self.rng_bag.append(Piece(
+                    *self.piece_origin,
+                    piece_data['color'],
+                    piece_data['stages'],
+                    piece_data['centers'],
+                ))
+            
+            # scramble bag
+            random.shuffle(self.rng_bag)
+        
+        # get random piece
+        return self.rng_bag.pop()
+        
     def new_piece(self):
 
         self.piece = self.next_piece
