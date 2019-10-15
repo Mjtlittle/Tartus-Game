@@ -59,15 +59,30 @@ class Piece:
         x, y = location
         w, h = dimensions
 
+        # get the size of the cells
         cw = w / board.width
         ch = h / board.height
 
+        # get the offset for how far the piece can go down
+        offset = 0
+        for i in range(board.height):
+            if board.does_hitbox_collide(self.get_hitbox(position_delta=(0, i))):
+                offset = i - 1
+                break
+        
         # draw active pieces
         for xi, yi in self.get_hitbox():
             cx = x + xi * cw
             cy = y + yi * ch
 
+            # actual location
             pygame.draw.rect(window, self.color, pygame.Rect(cx, cy, cw+1, ch+1))
+
+            # where the piece will end up if dropped
+            s = pygame.Surface((cw+1, ch+1))
+            s.set_alpha(50)
+            s.fill(self.color)
+            window.blit(s, (cx, cy + offset*ch))
     
     def draw_preview(self, window, location, dimensions):
 
