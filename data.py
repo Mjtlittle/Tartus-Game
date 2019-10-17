@@ -3,7 +3,7 @@ import pygame
 # settings
 game_name = 'Tartus'
 font = 'freesansbold.ttf'#'OpenSans-Bold.ttf'
-board_dimensions = (10,20)#(10,20)
+board_dimensions = (10,20)
 border_width = 3
 padding = 10
 
