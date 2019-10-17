@@ -455,6 +455,16 @@ class PauseMenu(GameMenuScene):
         self.add_option('Main Menu', lambda: self.manager.set_scene(MainMenu))
         self.add_option('Quit', self.manager.stop)
 
+    def on_event(self, event):
+        
+        # on click escape return to the game
+        if (event.type == pygame.KEYDOWN) and (event.key == pygame.K_ESCAPE):
+           self.manager.close_overlay_scene()
+        
+        # other wise passthrough
+        else:
+            super().on_event(event)
+
 class Controls(GameMenuScene):
     def setup(self):
         self.title = 'Controls'
