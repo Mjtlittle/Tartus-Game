@@ -16,6 +16,9 @@ class Game(Scene):
         # debug flag
         self.debug = True
 
+        # settings
+        self.allow_hold = False
+
         # controls
         self.controls = {
             pygame.K_r:      self.setup,
@@ -23,7 +26,7 @@ class Game(Scene):
             pygame.K_DOWN:   self.slow_drop,
             pygame.K_RIGHT:  self.move_right,
             pygame.K_LEFT:   self.move_left,
-            pygame.K_c:      self.hold_piece,
+            pygame.K_c:      self.hold_piece if self.allow_hold else None,
             pygame.K_UP:     self.rotate_clockwise,
             pygame.K_z:      self.rotate_counterclockwise,
             pygame.K_SPACE:  self.quick_drop
@@ -238,18 +241,19 @@ class Game(Scene):
         # draw hold piece
         #
 
-        text_surface = self.small_font.render('Hold', True, data.primary_color)
-        text_height = text_surface.get_rect().height
+        if self.allow_hold:
+            text_surface = self.small_font.render('Hold', True, data.primary_color)
+            text_height = text_surface.get_rect().height
 
-        size = self.height * 0.1
-        x = bx - size - data.padding
-        y = by + text_height
+            size = self.height * 0.1
+            x = bx - size - data.padding
+            y = by + text_height
 
-        pygame.draw.rect(self.window, data.foreground_color, pygame.Rect(x, y, size, size), data.border_width)
-        if self.piece_hold:
-            self.piece_hold.draw_preview(self.window, (x, y),(size, size))
+            pygame.draw.rect(self.window, data.foreground_color, pygame.Rect(x, y, size, size), data.border_width)
+            if self.piece_hold:
+                self.piece_hold.draw_preview(self.window, (x, y),(size, size))
 
-        self.window.blit(text_surface, (x, y-text_height))
+            self.window.blit(text_surface, (x, y-text_height))
 
         #
         # draw next piece
@@ -297,10 +301,8 @@ class Game(Scene):
         elif event.type == pygame.KEYDOWN:
             key = event.key
 
-            for control in self.controls:
-                if key == control:
-                    self.controls[control]()
-                    break
+            if (key in self.controls) and (self.controls[key]):
+                self.controls[key]()
                     
 #
 # menus
