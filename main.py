@@ -17,7 +17,7 @@ class Game(Scene):
         self.debug = True
 
         # settings
-        self.allow_hold = False
+        self.allow_hold = True
 
         # controls
         self.controls = {
@@ -71,7 +71,7 @@ class Game(Scene):
                     *self.piece_origin,
                     piece_data['color'],
                     piece_data['stages'],
-                    piece_data['centers'],
+                    piece_data['centers']
                 ))
             
             # scramble bag
