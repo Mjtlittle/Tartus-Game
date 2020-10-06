@@ -1,4 +1,4 @@
-# Tartus-Game
+# Tartus Game
 
 A recreation of tetris in python
 
